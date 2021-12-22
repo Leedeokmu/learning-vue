@@ -1,48 +1,37 @@
 <template>
-  <the-navigation @set-page="setActivePage"></the-navigation>
-  <main>
-    <router-view></router-view>
-  </main>
-  <footer>
-    <router-view name="footer"></router-view>
-  </footer>
+  <base-container title="Vuex">
+    <h3>{{ counter }}</h3>
+    <FavoriteValue></FavoriteValue>
+    <button @click="addOne">Add 1</button>
+  </base-container>
 </template>
 
 <script>
-import TheNavigation from './components/nav/TheNavigation.vue';
+import BaseContainer from './components/BaseContainer.vue';
+import FavoriteValue from "@/components/FavoriteValue";
 
 export default {
   components: {
-    TheNavigation,
+    FavoriteValue,
+    BaseContainer,
   },
-  data() {
-    return {
-      activePage: 'teams-list',
-      teams: [
-        { id: 't1', name: 'Frontend Engineers', members: ['u1', 'u2'] },
-        { id: 't2', name: 'Backend Engineers', members: ['u1', 'u2', 'u3'] },
-        { id: 't3', name: 'Client Consulting', members: ['u4', 'u5'] },
-      ],
-      users: [
-        { id: 'u1', fullName: 'Max Schwarz', role: 'Engineer' },
-        { id: 'u2', fullName: 'Praveen Kumar', role: 'Engineer' },
-        { id: 'u3', fullName: 'Julie Jones', role: 'Engineer' },
-        { id: 'u4', fullName: 'Alex Blackfield', role: 'Consultant' },
-        { id: 'u5', fullName: 'Marie Smith', role: 'Consultant' },
-      ],
-    };
-  },
-  provide() {
-    return {
-      teams: this.teams,
-      users: this.users,
-    };
+  computed: {
+    counter() {
+      return this.$store.state.counter;
+    }
   },
   methods: {
-    setActivePage(page) {
-      this.activePage = page;
+    addOne() {
+      this.$store.dispatch('increment');
     },
-  },
+    add() {
+      this.$store.commit('increase', {value: 10})
+      this.$store.commit({
+        type: 'increase',
+        value: 10
+      })
+    }
+  }
 };
 </script>
 
