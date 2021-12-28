@@ -1,50 +1,58 @@
 <template>
-  <base-container title="Vuex">
-    <h3>{{ counter }}</h3>
-    <FavoriteValue></FavoriteValue>
-    <button @click="addOne">Add 1</button>
-  </base-container>
+  <the-header></the-header>
+  <router-view v-slot="slotProps">
+    <transition name="route" mode="out-in">
+      <component :is="slotProps.Component"></component>
+    </transition>
+  </router-view>
 </template>
 
 <script>
-import BaseContainer from './components/BaseContainer.vue';
-import FavoriteValue from "@/components/FavoriteValue";
+import TheHeader from './components/layout/TheHeader.vue';
 
 export default {
   components: {
-    FavoriteValue,
-    BaseContainer,
-  },
-  computed: {
-    counter() {
-      return this.$store.state.counter;
-    }
-  },
-  methods: {
-    addOne() {
-      this.$store.dispatch('increment');
-    },
-    add() {
-      this.$store.commit('increase', {value: 10})
-      this.$store.commit({
-        type: 'increase',
-        value: 10
-      })
-    }
-  }
-};
+    TheHeader
+  }  
+}
 </script>
 
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
 * {
   box-sizing: border-box;
 }
 
 html {
-  font-family: sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 body {
   margin: 0;
+}
+
+.route-enter-from {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+.route-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.route-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.route-leave-active {
+  transition: all 0.3s ease-in;
+}
+
+.route-enter-to,
+.route-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>

@@ -1,26 +1,23 @@
-import {createStore} from "vuex";
-import rootMutations from "./mutations";
-import rootGetters from "./getters";
+import { createStore } from 'vuex';
+
+import coachesModule from './modules/coaches/index.js';
+import requestsModule from './modules/requests/index.js';
 
 const store = createStore({
+  modules: {
+    coaches: coachesModule,
+    requests: requestsModule
+  },
   state() {
     return {
-      counter: 0
+      userId: 'c3'
     };
   },
-  mutations: rootMutations,
-  getters: rootGetters,
-  actions: {
-    increment(context) {
-      setTimeout(() => {
-        context.commit('increment');
-      }, 2000);
-    },
-    // increment(context, payload){
-    //   context.commit('increment', payload);
-    // }
+  getters: {
+    userId(state) {
+      return state.userId;
+    }
   }
-
-})
+});
 
 export default store;
