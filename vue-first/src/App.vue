@@ -1,65 +1,46 @@
 <template>
-  <section class="container">
-    <UserData :firstName="user.firstName"  :lastName="user.lastName" ></UserData>
-    <button @click="setAge">Change Age</button>
-    <div>
-      <input type="text" placeholder="first name" v-model="user.firstName">
-      <input type="text" placeholder="last name" v-model="user.lastName">
-      <input type="text" placeholder="last name" ref="lastNameInput">
-    </div>
-  </section>
+  <the-header></the-header>
+  <router-view></router-view>
 </template>
 
 <script>
-import {computed, reactive, ref, provide } from "vue";
-import UserData from "@/components/UserData";
+import { ref, provide } from 'vue';
+
+import TheHeader from './components/TheHeader.vue';
 
 export default {
-  components: {UserData},
+  components: {
+    TheHeader,
+  },
   setup() {
-    const lastNameInput = ref(null);
-    const user = reactive({
-      name: 'freeefly',
-      age: 21,
-      firstName: '',
-      lastName: ''
-    });
-    const userAge = ref(21);
-    provide('userAge', userAge);
+    const products = ref([
+      {
+        id: 'p1',
+        title: 'A Carpet',
+        description: 'A nice looking, maybe a little bit used carpet.',
+        price: 15.99,
+      },
+      {
+        id: 'p2',
+        title: 'A Book',
+        description: 'You can read it. Maybe you should read it.',
+        price: 12.99,
+      },
+    ]);
 
-    // watch([user], (newValues, oldValues) => {
-    //   console.log('Old user: ', oldValues[0]);
-    //   console.log('New user: ', newValues[0]);
-    //   console.log('New animal: ', newValues[1]);
-    //   console.log('New animal: ', newValues[1]);
-    // })
-    const uName = computed(() => {
-      return user.firstName + ' ' + user.lastName
-    });
-
-    const setNewData = () => {
-      // user.age = 32;
-      userAge.value = 32;
+    function addProduct(productData) {
+      const newProduct = {
+        id: new Date().toISOString(),
+        title: productData.title,
+        description: productData.description,
+        price: productData.price,
+      };
+      products.value.push(newProduct);
     }
 
-    setTimeout(() => {
-      // userName.value = 'freefly';
-      user.name = 'freefly'
-    }, 1000);
-
-    return {
-      user: user,
-      setAge: setNewData,
-      name: uName,
-      lastNameInput
-    };
-  }
-
-  // data() {
-  //   return {
-  //     userName: 'Maximilian',
-  //   };
-  // },
+    provide('products', products);
+    provide('addProduct', addProduct);
+  },
 };
 </script>
 
