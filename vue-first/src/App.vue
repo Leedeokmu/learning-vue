@@ -1,73 +1,87 @@
 <template>
-  <the-header></the-header>
-  <router-view v-slot="slotProps">
-    <transition name="route" mode="out-in">
-      <component :is="slotProps.Component"></component>
-    </transition>
-  </router-view>
+  <section class="container">
+    <UserData :firstName="user.firstName"  :lastName="user.lastName" ></UserData>
+    <button @click="setAge">Change Age</button>
+    <div>
+      <input type="text" placeholder="first name" v-model="user.firstName">
+      <input type="text" placeholder="last name" v-model="user.lastName">
+      <input type="text" placeholder="last name" ref="lastNameInput">
+    </div>
+  </section>
 </template>
 
 <script>
-import TheHeader from './components/layout/TheHeader.vue';
+import {computed, reactive, ref, provide } from "vue";
+import UserData from "@/components/UserData";
 
 export default {
-  components: {
-    TheHeader
-  },
-  computed: {
-    didAutoLogout() {
-      return this.$store.getters.didAutoLogout;
+  components: {UserData},
+  setup() {
+    const lastNameInput = ref(null);
+    const user = reactive({
+      name: 'freeefly',
+      age: 21,
+      firstName: '',
+      lastName: ''
+    });
+    const userAge = ref(21);
+    provide('userAge', userAge);
+
+    // watch([user], (newValues, oldValues) => {
+    //   console.log('Old user: ', oldValues[0]);
+    //   console.log('New user: ', newValues[0]);
+    //   console.log('New animal: ', newValues[1]);
+    //   console.log('New animal: ', newValues[1]);
+    // })
+    const uName = computed(() => {
+      return user.firstName + ' ' + user.lastName
+    });
+
+    const setNewData = () => {
+      // user.age = 32;
+      userAge.value = 32;
     }
-  },
-  created() {
-    this.$store.dispatch('tryLogin');
-  },
-  watch: {
-    didAutoLogout(curValue, oldValue) {
-      if (curValue && curValue !== oldValue) {
-        this.$router.replace('/coaches');
-      }
-    }
+
+    setTimeout(() => {
+      // userName.value = 'freefly';
+      user.name = 'freefly'
+    }, 1000);
+
+    return {
+      user: user,
+      setAge: setNewData,
+      name: uName,
+      lastNameInput
+    };
   }
-}
+
+  // data() {
+  //   return {
+  //     userName: 'Maximilian',
+  //   };
+  // },
+};
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
-
 * {
   box-sizing: border-box;
 }
 
 html {
-  font-family: "Roboto", sans-serif;
+  font-family: sans-serif;
 }
 
 body {
   margin: 0;
 }
 
-.route-enter-from {
-  opacity: 0;
-  transform: translateY(-30px);
-}
-
-.route-leave-to {
-  opacity: 0;
-  transform: translateY(30px);
-}
-
-.route-enter-active {
-  transition: all 0.3s ease-out;
-}
-
-.route-leave-active {
-  transition: all 0.3s ease-in;
-}
-
-.route-enter-to,
-.route-leave-from {
-  opacity: 1;
-  transform: translateY(0);
+.container {
+  margin: 3rem auto;
+  max-width: 30rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  padding: 1rem;
+  text-align: center;
 }
 </style>
