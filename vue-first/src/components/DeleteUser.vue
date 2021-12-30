@@ -9,24 +9,28 @@
 </template>
 
 <script>
+import { ref } from 'vue';
 import UserAlert from './UserAlert.vue';
 
 export default {
   components: {
     UserAlert,
   },
-  data() {
+  setup() {
+    const alertIsVisible = ref(false);
+
+    function showAlert() {
+      alertIsVisible.value = true;
+    }
+    function hideAlert() {
+      alertIsVisible.value = false;
+    }
+
     return {
-      alertIsVisible: false,
+      alertIsVisible,
+      showAlert,
+      hideAlert,
     };
-  },
-  methods: {
-    showAlert() {
-      this.alertIsVisible = true;
-    },
-    hideAlert() {
-      this.alertIsVisible = false;
-    },
   },
 };
 </script>

@@ -9,18 +9,23 @@
 </template>
 
 <script>
-import alertMixin from '../mixins/alert';
-import UserAlert from "@/components/UserAlert";
+import UserAlert from './UserAlert.vue';
+import useAlert from "@/hooks/alert";
+import {ref} from "vue";
 
 export default {
   components: {
-    UserAlert
+    UserAlert,
   },
-  data(){
+  setup() {
+    const alertTitle = ref('Delete User');
+    const [alertIsVisible, showAlert, hideAlert] = useAlert();
     return {
-      alertTitle: ''
+      alertIsVisible,
+      showAlert,
+      hideAlert,
+      alertTitle
     }
   },
-  mixins: [alertMixin]
 };
 </script>
