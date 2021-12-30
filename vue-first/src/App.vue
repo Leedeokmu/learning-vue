@@ -1,45 +1,18 @@
 <template>
-  <the-header></the-header>
-  <router-view></router-view>
+  <main>
+    <add-user></add-user>
+    <delete-user></delete-user>
+  </main>
 </template>
 
 <script>
-import { ref, provide } from 'vue';
-
-import TheHeader from './components/TheHeader.vue';
+import AddUser from './components/AddUser.vue';
+import DeleteUser from './components/DeleteUser.vue';
 
 export default {
   components: {
-    TheHeader,
-  },
-  setup() {
-    const products = ref([
-      {
-        id: 'p1',
-        title: 'A Carpet',
-        description: 'A nice looking, maybe a little bit used carpet.',
-        price: 15.99,
-      },
-      {
-        id: 'p2',
-        title: 'A Book',
-        description: 'You can read it. Maybe you should read it.',
-        price: 12.99,
-      },
-    ]);
-
-    function addProduct(productData) {
-      const newProduct = {
-        id: new Date().toISOString(),
-        title: productData.title,
-        description: productData.description,
-        price: productData.price,
-      };
-      products.value.push(newProduct);
-    }
-
-    provide('products', products);
-    provide('addProduct', addProduct);
+    AddUser,
+    DeleteUser,
   },
 };
 </script>
@@ -57,12 +30,31 @@ body {
   margin: 0;
 }
 
-.container {
+main {
+  width: 40rem;
   margin: 3rem auto;
-  max-width: 30rem;
+}
+
+section {
+  margin: 2rem auto;
+  border: 1px solid #ccc;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   padding: 1rem;
-  text-align: center;
+}
+
+button {
+  font: inherit;
+  background-color: #310131;
+  border: 1px solid #310131;
+  border-radius: 8px;
+  color: white;
+  padding: 0.5rem 1.5rem;
+  cursor: pointer;
+}
+
+button:hover,
+button:active {
+  background-color: #770e77;
+  border-color: #770e77;
 }
 </style>
